@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    android:background="@color/background_primary"
     android:orientation="vertical"
-    android:background="@color/background_primary">
+    tools:context=".MainActivity">
 
     <Space
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="210dp"
         android:layout_gravity="center"
-        android:contentDescription="SimplyHealth logo"
+        android:contentDescription="l"
         tools:srcCompat="@drawable/logo" />
 
     <Space
@@ -39,8 +39,8 @@
         style="@android:style/Widget.Material.EditText"
         android:layout_width="match_parent"
         android:layout_height="63dp"
-        android:gravity="center"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/password_hint"
         android:inputType="textPassword" />
 
@@ -53,10 +53,10 @@
         style="@android:style/Widget.Material.Light.Button"
         android:layout_width="139dp"
         android:layout_height="62dp"
-        android:textSize="16dp"
         android:layout_gravity="center"
         android:backgroundTint="@color/buttons"
-        android:text="@string/login_button" />
+        android:text="@string/login_button"
+        android:textSize="16dp" />
 
     <Space
         android:layout_width="match_parent"

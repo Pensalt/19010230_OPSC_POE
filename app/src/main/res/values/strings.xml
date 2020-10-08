@@ -5,5 +5,52 @@
     <string name="login_button">Login</string>
     <string name="signup_button">Sign Up</string>
     <string name="no_account_signup">Don\'t have an account?</string>
+    <string name="metric">Metric System:</string>
+    <string name="user_info">User Information</string>
+    <string name="settings_heading">Settings</string>
+    <string name="name_label">First Name:</string>
+    <string name="surname_label">Surname:</string>
+    <string name="email_label">Email:</string>
+    <string name="name_placeholder">Name</string>
+    <string name="surname_placeholder">Surname</string>
+    <string name="email_placeholder">Email</string>
+    <string name="goal_calories">Daily Calorie Goal:</string>
+    <string name="name_hint">First Name</string>
+    <string name="surname_hint">Surname</string>
+    <string name="goal_calories_hint">Daily Calorie Goal</string>
+    <string name="signup_heading">Sign Up</string>
+    <string name="confirm">Confirm Settings</string>
+    <string name="calories_consumed">Calories Consumed:</string>
+    <string name="weight_placeholder">weight num</string>
+    <string name="cal_placeholder">cal num</string>
+    <string name="progress_to_goal">Progress towards Your Goal</string>
+    <string name="progress_Num_placeholder">percentage progress</string>
+    <string name="simply_health">Simply Health</string>
+    <string name="record_weight">Record Daily Weight</string>
+    <string name="capture_meal">Capture a Meal</string>
+
+
+    //Metric labels and placeholders
+    <string name="height_met">Current Height (cm):</string>
+    <string name="weight_met">Current Weight (Kg):</string>
+    <string name="goal_weight_met">Goal Weight (Kg):</string>
+    <string name="height_hint_met">Current Height (cm)</string>
+    <string name="weight_hint_met">Current Weight (Kg)</string>
+    <string name="goal_weight_hint_met">Goal Weight (Kg)</string>
+    <string name="history_weight_met">Weight (Kg):</string>
+
+    //End
+
+    // Imperial labels and placeholders
+    <string name="height_imp">Current Height (ft):</string>
+    <string name="weight_imp">Current Weight (lb):</string>
+    <string name="goal_weight_imp">Goal Weight (lb):</string>
+    <string name="height_hint_imp">Current Height (ft)</string>
+    <string name="weight_hint_imp">Current Weight (lb)</string>
+    <string name="goal_weight_hint_imp">Goal Weight (lb)</string>
+    <string name="history_weight_imp">Weight (lb):</string>
+
+    //End
+
 
 </resources>
