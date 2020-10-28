@@ -20,10 +20,12 @@
             android:layout_height="12dp" />
 
         <ImageView
-            android:id="@+id/LogoImgView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@drawable/logo" />
+            android:id="@+id/LogoImgView_settings"
+            android:layout_width="253dp"
+            android:layout_height="168dp"
+            android:layout_gravity="center"
+            android:contentDescription="logo"
+            app:srcCompat="@drawable/logo" />
 
         <Space
             android:layout_width="match_parent"
@@ -37,8 +39,9 @@
             <Space
                 android:layout_width="5dp"
                 android:layout_height="wrap_content"/>
+
             <TextView
-                android:id="@+id/usersNameLabelET"
+                android:id="@+id/usersNameLabelTV_settings"
                 android:layout_width="111dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -49,7 +52,7 @@
                 android:text="@string/name_label" />
 
             <EditText
-                android:id="@+id/usersNameET"
+                android:id="@+id/usersNameET_settings"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -72,7 +75,7 @@
                 android:layout_width="5dp"
                 android:layout_height="wrap_content"/>
             <TextView
-                android:id="@+id/usersSurnameLabelET"
+                android:id="@+id/usersSurnameLabelTV_settings"
                 android:layout_width="111dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -82,7 +85,7 @@
                 android:text="@string/surname_label" />
 
             <EditText
-                android:id="@+id/usersSurnameET"
+                android:id="@+id/usersSurnameET_settings"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -106,24 +109,26 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/usersEmailLabelET"
+                android:id="@+id/usersEmailLabelTV_settings"
                 android:layout_width="111dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:clickable="false"
                 android:ems="10"
                 android:textSize="20dp"
                 android:textColor="@color/black"
                 android:text="@string/email_label" />
 
             <EditText
-                android:id="@+id/userEmailET"
+                android:id="@+id/userEmailET_settings"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/email_placeholder"
-                android:inputType="textPersonName" />
+                android:clickable="false"
+                android:focusable="false"
+                android:enabled="false"
+                android:inputType="none"/>
 
         </LinearLayout>
 
@@ -141,7 +146,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/currentHeightTv"
+                android:id="@+id/currentHeightTV_settings"
                 android:layout_width="308dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -152,7 +157,7 @@
                 android:text="@string/height_met" />
 
             <EditText
-                android:id="@+id/currentHeightNumET"
+                android:id="@+id/currentHeightNumET_settings"
                 android:layout_width="127dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -175,7 +180,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/currentWeightTV"
+                android:id="@+id/currentWeightTV_settings"
                 android:layout_width="308dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -186,11 +191,12 @@
                 android:text="@string/weight_met" />
 
             <EditText
-                android:id="@+id/currentWeightNumET"
+                android:id="@+id/currentWeightNumET_settings"
                 android:layout_width="127dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:clickable="false"
                 android:inputType="numberDecimal" />
         </LinearLayout>
 
@@ -208,7 +214,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/goaltWeightET"
+                android:id="@+id/goalWeightTV_settings"
                 android:layout_width="308dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -219,7 +225,7 @@
                 android:text="@string/goal_weight_met" />
 
             <EditText
-                android:id="@+id/goalWeightNumET"
+                android:id="@+id/goalWeightNumET_settings"
                 android:layout_width="127dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -242,7 +248,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/calorieGoalET"
+                android:id="@+id/calorieGoalTV_settings"
                 android:layout_width="308dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -253,13 +259,12 @@
                 android:text="@string/goal_calories" />
 
             <EditText
-                android:id="@+id/calorieGoalNumET"
+                android:id="@+id/calorieGoalNumET_settings"
                 android:layout_width="127dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-
                 />
         </LinearLayout>
 
@@ -268,26 +273,26 @@
             android:layout_height="18dp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
             android:orientation="horizontal">
 
             <Space
                 android:layout_width="5dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/useMetricET"
+                android:id="@+id/useMetricTV_settings"
                 android:layout_width="308dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
+                android:text="@string/metric"
                 android:textColor="@color/black"
-                android:textSize="20dp"
-                android:text="@string/metric" />
+                android:textSize="20dp" />
 
             <Switch
-                android:id="@+id/metricSwitch"
+                android:id="@+id/metricSwitch_settings"
                 android:layout_width="115dp"
                 android:layout_height="match_parent"
                 android:checked="true"
@@ -301,12 +306,12 @@
             android:layout_height="18dp" />
 
         <Button
-            android:id="@+id/confirm_button"
+            android:id="@+id/confirmBtn_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="@color/buttons"
-            android:text="@string/confirm" />
+            android:text="@string/confirm_settings" />
 
     </LinearLayout>
 

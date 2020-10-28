@@ -19,15 +19,23 @@
     <string name="surname_hint">Surname</string>
     <string name="goal_calories_hint">Daily Calorie Goal</string>
     <string name="signup_heading">Sign Up</string>
-    <string name="confirm">Confirm Settings</string>
+    <string name="confirm_settings">Confirm Settings</string>
+    <string name="confirm">Confirm</string>
     <string name="calories_consumed">Calories Consumed:</string>
     <string name="weight_placeholder">weight num</string>
     <string name="cal_placeholder">cal num</string>
     <string name="progress_to_goal">Progress towards Your Goal</string>
     <string name="progress_Num_placeholder">percentage progress</string>
     <string name="simply_health">Simply Health</string>
-    <string name="record_weight">Record Daily Weight</string>
     <string name="capture_meal">Capture a Meal</string>
+    <string name="capture_image">Capture Image</string>
+    <string name="meal_info">Meal Breakdown</string>
+    <string name="meal_cal">Calories</string>
+    <string name="meal_name">Meal Name</string>
+
+
+
+
 
 
     //Metric labels and placeholders
@@ -38,6 +46,8 @@
     <string name="weight_hint_met">Current Weight (Kg)</string>
     <string name="goal_weight_hint_met">Goal Weight (Kg)</string>
     <string name="history_weight_met">Weight (Kg):</string>
+    <string name="record_weight_met">Record Daily Weight (Kg)</string>
+
 
     //End
 
@@ -49,6 +59,8 @@
     <string name="weight_hint_imp">Current Weight (lb)</string>
     <string name="goal_weight_hint_imp">Goal Weight (lb)</string>
     <string name="history_weight_imp">Weight (lb):</string>
+    <string name="record_weight_imp">Record Daily Weight (lb)</string>
+
 
     //End
 
