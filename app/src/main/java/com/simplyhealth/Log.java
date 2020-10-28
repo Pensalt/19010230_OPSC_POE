@@ -249,42 +249,6 @@ public class Log extends AppCompatActivity {
                         }
                     }
 
-                    /*d = snapshot.getValue(DailyWeightInfo.class);
-
-
-
-                    for (DataSnapshot daily : snapshot.getChildren()){
-
-                        //d = daily.getValue(DailyWeightInfo.class);
-
-                        d.setCaptureDate(daily.child("captureDate").toString());
-
-                        //d.setWeight(daily.child("weight").toString());
-
-                        //String w = daily.child("weight").toString();
-                        //double dWeight = Double.parseDouble(w);
-                        //d.setWeight(dWeight);
-
-
-
-                        if (d.getCaptureDate().equals(currentDate)){
-
-                            //daily.getChildren()
-                            u.setCurrentWeight(d.getWeight()); // Updating the user's current weight.
-                            if (u.getUseMetric() == false){
-                                double currentW = u.getCurrentWeight() * 2.205;
-                                double goalW = u.getGoalWeight() * 2.205;
-                                weightOnDayNumTV.setText(currentW + "");
-                            }
-                            else
-                            {
-                                weightOnDayNumTV.setText(u.getCurrentWeight() + "");
-                            }
-                            found = true;
-                            break;
-                        }*/
-                    //}
-
                     if (found == false){
                         weightOnDayNumTV.setText("NA");
                         //caloriesOnDayNumTV.setText("NA");
