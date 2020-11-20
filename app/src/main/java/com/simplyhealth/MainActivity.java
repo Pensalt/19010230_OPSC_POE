@@ -87,6 +87,8 @@ public class  MainActivity extends AppCompatActivity {
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                emailET.getText().clear(); // Clearing the input field for the user's email.
+                passwordET.getText().clear(); //
                 Intent goToSignUp = new Intent(MainActivity.this,SignUp.class);
                 startActivity(goToSignUp);
             }

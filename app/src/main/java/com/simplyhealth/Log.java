@@ -40,8 +40,11 @@ public class Log extends AppCompatActivity {
 
     Boolean useMetric;
     User u;
-    DailyWeightInfo d = new DailyWeightInfo();
+    static DailyWeightInfo d = new DailyWeightInfo();
     MealBreakdown m = new MealBreakdown();
+
+    public static void d(String tag, String key) {
+    }
 
 
     @Override
@@ -98,21 +101,25 @@ public class Log extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
                 try {
+
+                    final String selectedDate = i2 + "-" + (i1 +1) + "-" + i; // Getting the currently selected date and formatting as needed (dd-MM-yyyy). The plus 1 is necessary because Jan is 0 instead of 1
+
                     DatabaseReference ref = db.getReference(mAuth.getCurrentUser().getUid());
                     ref.child("Daily Weight").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                            long selected = historyCalendarCV.getDate();
-                            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-                            String currentDate = df.format(selected);
+                            //long selected = historyCalendarCV.getDate();
+                            //SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+                            //String currentDate = df.format(selected);
+
 
                             Boolean found = false;
                             for (DataSnapshot daily : snapshot.getChildren()){
 
                                 d = daily.getValue(DailyWeightInfo.class);
 
-                                if (d.getCaptureDate().equals(currentDate)){
+                                if (d.getCaptureDate().equals(selectedDate)){
 
                                     if (u.getUseMetric() == false){
                                         double currentW = d.getWeight() * 2.205;
@@ -123,13 +130,14 @@ public class Log extends AppCompatActivity {
                                     else
                                     {
                                         weightOnDayNumTV.setText(d.getWeight() + "");
+                                        found = true;
                                     }
                                 }
                             }
 
                             if (found == false){
                                 weightOnDayNumTV.setText("NA");
-                                caloriesOnDayNumTV.setText("NA");
+                                //caloriesOnDayNumTV.setText("NA");
                             }
 
                         }
@@ -144,9 +152,9 @@ public class Log extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                            Date current = Calendar.getInstance().getTime();
-                            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-                            String currentDate = df.format(current);
+                            //Long selected = historyCalendarCV.getDate();
+                            //SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+                            //String selectedDate = df.format(selected);
                             double dailyTotalCal = 0;
 
                             Boolean found = false;
@@ -154,7 +162,7 @@ public class Log extends AppCompatActivity {
 
                                 m = daily.getValue(MealBreakdown.class);
 
-                                if (m.getCaptureDate().equals(currentDate)){
+                                if (m.getCaptureDate().equals(selectedDate)){
 
                                     dailyTotalCal += m.getCalories();
                                     found = true;
@@ -309,6 +317,7 @@ public class Log extends AppCompatActivity {
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     void Resume() {
         //super.onResume();
+        //weightOnDayNumTV.setText("");
         InitialDataPopulation();
     }
 }

@@ -37,8 +37,11 @@ public class RecordWeight extends AppCompatActivity {
     EditText weightET;
     ImageView logoImg;
     User u;
-    Boolean useMetric;
+    Boolean useMetric, needToUpdate;
     DailyWeightInfo d;
+    DailyWeightInfo checkIfExists;
+    String key;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,9 @@ public class RecordWeight extends AppCompatActivity {
         weightET = findViewById(R.id.recordWeightET_cap);
         logoImg = findViewById(R.id.LogoImgView_cap);
 
+
+        needToUpdate = false;
+
         mAuth = FirebaseAuth.getInstance();
         SetMeasurement(); // Calls the method to update the UI based on measurement system.
 
@@ -58,7 +64,7 @@ public class RecordWeight extends AppCompatActivity {
 
                 Date date = Calendar.getInstance().getTime();
                 SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-                String recordDate = df.format(date);
+                final String recordDate = df.format(date);
 
                 double weight = parseDouble(weightET.getText().toString());
 
@@ -72,11 +78,57 @@ public class RecordWeight extends AppCompatActivity {
                         weight = weight / 2.205; // Converting the value back to a metric system value.
                     }
 
+                    final double userWeight = weight;
                     try {
-                        DatabaseReference captureUserInfo = db.getReference(mAuth.getCurrentUser().getUid()); // Getting the current user's UID
+                        final DatabaseReference captureUserInfo = db.getReference(mAuth.getCurrentUser().getUid()); // Getting the current user's UID
                         d = new DailyWeightInfo(recordDate,weight);
-                        captureUserInfo.child("Daily Weight").push().setValue(d);
+
+
+                        //Boolean needToUpdate = false;
+                        //String key ="";
+
+                        captureUserInfo.child("Daily Weight").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+
+                                for (DataSnapshot daily : snapshot.getChildren()){
+
+                                    checkIfExists = daily.getValue(DailyWeightInfo.class);
+
+                                    if (checkIfExists.getCaptureDate().equals(recordDate))
+                                    {
+                                        needToUpdate = true;
+                                        key = daily.getKey();
+                                        break;
+                                    }
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(RecordWeight.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                            }
+                        }) ;
+
+                        if (needToUpdate == true)
+                        {
+
+                            //captureUserInfo.child("Daily Weight").child(key).child("weight").setValue(userWeight);
+                            captureUserInfo.child("Daily Weight").child(key).setValue(d);
+                            //Toast.makeText(RecordWeight.this, key, Toast.LENGTH_LONG).show();
+
+                            //Log.d("tag",key);
+                        }
+                        else{
+                            captureUserInfo.child("Daily Weight").push().setValue(d);
+                        }
+
                         Toast.makeText(RecordWeight.this, "Daily weight successfully captured!", Toast.LENGTH_SHORT).show();
+
                     } catch (Exception e){
                         Toast.makeText(RecordWeight.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }

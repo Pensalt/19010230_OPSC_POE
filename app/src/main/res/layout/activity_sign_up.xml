@@ -22,7 +22,8 @@
             android:id="@+id/LogoImgView_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:srcCompat="@drawable/logo" />
+            android:contentDescription="logo"
+            app:srcCompat="@drawable/logo" />
 
         <Space
             android:layout_width="match_parent"

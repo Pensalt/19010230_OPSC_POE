@@ -32,7 +32,9 @@
     <string name="meal_info">Meal Breakdown</string>
     <string name="meal_cal">Calories</string>
     <string name="meal_name">Meal Name</string>
-
+    <string name="metric_switch">M</string>
+    <string name="imperial_switch">I</string>
+    <string name="measurement_system">Measurement System:</string>
 
 
 
