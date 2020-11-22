@@ -25,7 +25,7 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth mAuth; // Declaring an instance of FirebaseAuth
     FirebaseDatabase db = FirebaseDatabase.getInstance();
 
-    EditText fNameET, sNameET, emailET, currentWeightET, currentHeightET, goalWeightET, goalCalET, passwordET;
+    EditText fNameET, sNameET, emailET, currentHeightET, goalWeightET, goalCalET, passwordET;
     Button btnConfirm;
     ImageView logoImg;
 
@@ -38,7 +38,6 @@ public class SignUp extends AppCompatActivity {
         fNameET = findViewById(R.id.usersNameET_signup);
         sNameET = findViewById(R.id.usersSurnameET_signup);
         emailET = findViewById(R.id.usersEmailET_signup);
-        currentWeightET = findViewById(R.id.currentWeightET_signup);
         currentHeightET = findViewById(R.id.currentHeightET_signup);
         goalWeightET = findViewById(R.id.goalWeightET_signup);
         goalCalET =findViewById(R.id.calorieGoalNumET_signup);
@@ -70,13 +69,12 @@ public class SignUp extends AppCompatActivity {
                                     {
                                         String firstName = fNameET.getText().toString().trim();
                                         String surname = sNameET.getText().toString().trim();
-                                        double currentWeight = Double.parseDouble(currentWeightET.getText().toString());
                                         double currentHeight = Double.parseDouble(currentHeightET.getText().toString());
                                         double goalWeight = Double.parseDouble(goalWeightET.getText().toString());
                                         double goalCal = Double.parseDouble(goalCalET.getText().toString());
                                         Boolean metric = true; // Always set to true as metric is the default measurement system.
 
-                                        if (firstName.equals("") || surname.equals("") || currentHeight <= 0 || currentWeight <= 0 || goalWeight <= 0 || goalCal <= 0)
+                                        if (firstName.equals("") || surname.equals("") || currentHeight <= 0 || goalWeight <= 0 || goalCal <= 0)
                                         {
                                             Toast.makeText(SignUp.this, "Please enter valid information!", Toast.LENGTH_SHORT).show();
                                         }
@@ -84,7 +82,7 @@ public class SignUp extends AppCompatActivity {
                                         {
                                             try {
                                                 DatabaseReference captureUserInfo = db.getReference(mAuth.getCurrentUser().getUid()); // Getting the current user's UID
-                                                User u = new User(firstName,surname,currentWeight,goalWeight,currentHeight,goalCal,metric);
+                                                User u = new User(firstName,surname,goalWeight,currentHeight,goalCal,metric);
                                                 captureUserInfo.child("User Details").setValue(u);
 
                                                 Toast.makeText(SignUp.this,"Account successfully created",Toast.LENGTH_SHORT).show();

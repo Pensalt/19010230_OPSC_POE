@@ -90,20 +90,6 @@
             android:layout_height="20dp" />
 
         <EditText
-            android:id="@+id/currentWeightET_signup"
-            android:layout_width="375dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal"
-            android:hint="@string/weight_hint_met"
-            android:gravity="center"
-            android:layout_gravity="center"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <EditText
             android:id="@+id/currentHeightET_signup"
             android:layout_width="375dp"
             android:layout_height="wrap_content"

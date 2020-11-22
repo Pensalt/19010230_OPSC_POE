@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@color/background_primary">
+    android:background="@color/background_primary"
+    android:visibility="visible">
 
 
     <LinearLayout
@@ -39,18 +40,18 @@
 
             <Space
                 android:layout_width="5dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/usersNameLabelTV_settings"
-                android:layout_width="120dp"
+                android:layout_width="125dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="false"
                 android:ems="10"
+                android:text="@string/name_label"
                 android:textColor="@color/black"
-                android:textSize="20dp"
-                android:text="@string/name_label" />
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/usersNameET_settings"
@@ -74,16 +75,17 @@
 
             <Space
                 android:layout_width="5dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/usersSurnameLabelTV_settings"
-                android:layout_width="120dp"
+                android:layout_width="125dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:textSize="20dp"
+                android:text="@string/surname_label"
                 android:textColor="@color/black"
-                android:text="@string/surname_label" />
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/usersSurnameET_settings"
@@ -107,29 +109,29 @@
 
             <Space
                 android:layout_width="5dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/usersEmailLabelTV_settings"
-                android:layout_width="120dp"
+                android:layout_width="125dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:textSize="20dp"
+                android:text="@string/email_label"
                 android:textColor="@color/black"
-                android:text="@string/email_label" />
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/userEmailET_settings"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10"
-                android:hint="@string/email_placeholder"
                 android:clickable="false"
-                android:focusable="false"
+                android:ems="10"
                 android:enabled="false"
-                android:inputType="none"/>
+                android:focusable="false"
+                android:hint="@string/email_placeholder"
+                android:inputType="none" />
 
         </LinearLayout>
 
@@ -144,7 +146,7 @@
 
             <Space
                 android:layout_width="5dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/currentHeightTV_settings"
@@ -153,9 +155,9 @@
                 android:layout_weight="1"
                 android:clickable="false"
                 android:ems="10"
+                android:text="@string/height_met"
                 android:textColor="@color/black"
-                android:textSize="20dp"
-                android:text="@string/height_met" />
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/currentHeightNumET_settings"
@@ -163,42 +165,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="numberDecimal"  />
-
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="18dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Space
-                android:layout_width="5dp"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/currentWeightTV_settings"
-                android:layout_width="308dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="false"
-                android:ems="10"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                android:text="@string/weight_met" />
-
-            <EditText
-                android:id="@+id/currentWeightNumET_settings"
-                android:layout_width="127dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:clickable="false"
                 android:inputType="numberDecimal" />
+
         </LinearLayout>
 
         <Space
@@ -212,7 +180,7 @@
 
             <Space
                 android:layout_width="5dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/goalWeightTV_settings"
@@ -221,9 +189,9 @@
                 android:layout_weight="1"
                 android:clickable="false"
                 android:ems="10"
-                android:textSize="20dp"
+                android:text="@string/goal_weight_met"
                 android:textColor="@color/black"
-                android:text="@string/goal_weight_met" />
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/goalWeightNumET_settings"
@@ -246,7 +214,7 @@
 
             <Space
                 android:layout_width="5dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/calorieGoalTV_settings"
@@ -255,9 +223,9 @@
                 android:layout_weight="1"
                 android:clickable="false"
                 android:ems="10"
+                android:text="@string/goal_calories"
                 android:textColor="@color/black"
-                android:textSize="20dp"
-                android:text="@string/goal_calories" />
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/calorieGoalNumET_settings"
@@ -265,8 +233,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="numberDecimal"
-                />
+                android:inputType="numberDecimal" />
         </LinearLayout>
 
         <Space
@@ -297,12 +264,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:checked="true"
-                android:switchMinWidth="75dp"
                 android:showText="true"
-                android:textOn="@string/metric_switch"
+                android:switchMinWidth="75dp"
+                android:switchTextAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textOff="@string/imperial_switch"
-                android:textSize="20sp"
-                android:switchTextAppearance="@style/TextAppearance.AppCompat.Small" />
+                android:textOn="@string/metric_switch"
+                android:textSize="20sp" />
 
         </LinearLayout>
 

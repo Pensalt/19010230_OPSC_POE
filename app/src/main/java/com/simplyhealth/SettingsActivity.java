@@ -19,12 +19,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class SettingsActivity extends AppCompatActivity {
+public class   SettingsActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth; // Declaring an instance of FirebaseAuth
     FirebaseDatabase db = FirebaseDatabase.getInstance();
 
-    TextView firstNameTV, surnameTV, currentHeightTV, currentWeightTV, goalWeightTV, dailyCalorieGoalTV, metricChoiceTV, emailTV;
+    TextView firstNameTV, surnameTV, currentHeightTV, goalWeightTV, dailyCalorieGoalTV, metricChoiceTV, emailTV;
     EditText firstNameET, surnameET, currentHeightET, currentWeightET, goalWeightET, dailyCalorieGoalET, emailET;
     ImageView logoImg;
     Button confirmBtn;
@@ -43,7 +43,6 @@ public class SettingsActivity extends AppCompatActivity {
         firstNameTV = findViewById(R.id.usersNameLabelTV_settings);
         surnameTV = findViewById(R.id.usersSurnameLabelTV_settings);
         currentHeightTV = findViewById(R.id.currentHeightTV_settings);
-        currentWeightTV = findViewById(R.id.currentWeightTV_settings);
         goalWeightTV = findViewById(R.id.goalWeightTV_settings);
         dailyCalorieGoalTV = findViewById(R.id.calorieGoalTV_settings);
         metricChoiceTV = findViewById(R.id.useMetricTV_settings);
@@ -52,7 +51,6 @@ public class SettingsActivity extends AppCompatActivity {
         firstNameET = findViewById(R.id.usersNameET_settings);
         surnameET = findViewById(R.id.usersSurnameET_settings);
         currentHeightET = findViewById(R.id.currentHeightNumET_settings);
-        currentWeightET = findViewById(R.id.currentWeightNumET_settings);
         goalWeightET = findViewById(R.id.goalWeightNumET_settings);
         dailyCalorieGoalET = findViewById(R.id.calorieGoalNumET_settings);
         emailET = findViewById(R.id.userEmailET_settings);
@@ -76,25 +74,22 @@ public class SettingsActivity extends AppCompatActivity {
                 String surname = surnameET.getText().toString().trim();
                 double goalCal = Double.parseDouble(dailyCalorieGoalET.getText().toString());
                 double currentHeight;
-                double currentWeight;
                 double goalWeight;
 
 
 
                 if (useMetric == false) {
                     currentHeight = Double.parseDouble(currentHeightET.getText().toString()) * 30.48;
-                    currentWeight = Double.parseDouble(currentWeightET.getText().toString()) / 2.205;
                     goalWeight = Double.parseDouble(goalWeightET.getText().toString()) / 2.205;
                     metricSwitch.setChecked(false);
                 } else {
                     currentHeight = Double.parseDouble(currentHeightET.getText().toString());
-                    currentWeight = Double.parseDouble(currentWeightET.getText().toString());
                     goalWeight = Double.parseDouble(goalWeightET.getText().toString());
                     metricSwitch.setChecked(true);
                 }
 
                 // Data validation
-                if (firstName.equals("") || surname.equals("") || currentHeight <= 0 || currentWeight <= 0 || goalWeight <= 0 || goalCal <= 0)
+                if (firstName.equals("") || surname.equals("") || currentHeight <= 0 || goalWeight <= 0 || goalCal <= 0)
                 {
                     Toast.makeText(SettingsActivity.this, "Please enter valid data!", Toast.LENGTH_SHORT).show();
                 }
@@ -102,7 +97,7 @@ public class SettingsActivity extends AppCompatActivity {
                 {
                     try {
                         DatabaseReference captureUserInfo = db.getReference(mAuth.getCurrentUser().getUid()); // Getting the current user's UID
-                        User u = new User(firstName, surname, currentWeight, goalWeight, currentHeight, goalCal, useMetric);
+                        User u = new User(firstName, surname, goalWeight, currentHeight, goalCal, useMetric);
                         captureUserInfo.child("User Details").setValue(u);
                         Toast.makeText(SettingsActivity.this, "Settings Successfully Updated", Toast.LENGTH_SHORT).show(); // User validation message.
                     } catch (Exception e) {
@@ -124,11 +119,6 @@ public class SettingsActivity extends AppCompatActivity {
                     currentHeightET.setText(metHeight + "");
 
                     // Handling conversion to metric weight during runtime (users can enter imperial values and have them converted to metric)
-                    currentWeightTV.setText(R.string.weight_met);
-                    double metWeight = Double.parseDouble(currentWeightET.getText().toString()) / 2.205;
-                    currentWeightET.setText(metWeight + "");
-
-                    // Handling conversion to metric weight during runtime (users can enter imperial values and have them converted to metric)
                     goalWeightTV.setText(R.string.goal_weight_met);
                     double metGoalWeight = Double.parseDouble(goalWeightET.getText().toString()) / 2.205;
                     goalWeightET.setText(metGoalWeight + "");
@@ -140,10 +130,6 @@ public class SettingsActivity extends AppCompatActivity {
                     double impHeight = Double.parseDouble(currentHeightET.getText().toString()) / 30.48;
                     currentHeightET.setText(impHeight + "");
 
-                    // Handling conversion to imperial weight during runtime (users can enter metric values and have them converted to imperial)
-                    currentWeightTV.setText(R.string.weight_imp);
-                    double impWeight = Double.parseDouble(currentWeightET.getText().toString()) * 2.205;
-                    currentWeightET.setText(impWeight + "");
 
                     // Handling conversion to imperial weight during runtime (users can enter metric values and have them converted to imperial)
                     goalWeightTV.setText(R.string.goal_weight_imp);
@@ -178,11 +164,6 @@ public class SettingsActivity extends AppCompatActivity {
                         double impHeight = Math.round(u.getCurrentHeight() / 30.48);
                         currentHeightET.setText(impHeight + "");
 
-                        // Handling imperial weight.
-                        currentWeightTV.setText(R.string.weight_imp);
-                        double impWeight = u.getCurrentWeight() * 2.205;
-                        currentWeightET.setText(impWeight + "");
-
                         // Handling imperial goal weight.
                         goalWeightTV.setText(R.string.goal_weight_imp);
                         double impWeightGoal = u.getGoalWeight() * 2.205;
@@ -190,7 +171,6 @@ public class SettingsActivity extends AppCompatActivity {
                     } else {
                         metricSwitch.setChecked(true);
                         currentHeightET.setText(u.getCurrentHeight() + "");
-                        currentWeightET.setText(u.getCurrentWeight() + "");
                         goalWeightET.setText(u.getGoalWeight() + "");
                         useMetric = true; // Setting the user's unit system choice to metric.
                     }

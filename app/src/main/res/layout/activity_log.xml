@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/background_primary"
-    android:backgroundTint="@color/background_primary">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,12 +43,12 @@
             android:id="@+id/historyCalenderView_log"
             android:layout_width="match_parent"
             android:layout_height="309dp"
-            android:minDate="01/01/2020"
-            android:maxDate="19/11/2077"
             android:background="@color/background_primary"
             android:backgroundTint="@color/background_primary"
             android:focusedMonthDateColor="@color/design_default_color_on_secondary"
-            android:foregroundTint="@color/background_primary" />
+            android:foregroundTint="@color/background_primary"
+            android:maxDate="19/11/2077"
+            android:minDate="01/01/2020" />
 
         <Space
             android:layout_width="match_parent"
@@ -185,38 +185,84 @@
 
         <Space
             android:layout_width="match_parent"
+            android:layout_height="35dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/calChart_log"
+                android:layout_width="320dp"
+                android:layout_height="250dp"
+                android:clickable="false"
+                android:focusable="false"
+                />
+
+        </LinearLayout>
+
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/weightChart_log"
+                android:layout_width="330dp"
+                android:layout_height="250dp"
+                android:clickable="false"
+                android:focusable="false"
+                />
+
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
             android:layout_height="20dp" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="horizontal">
 
+
             <Space
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"/>
+                android:layout_width="10dp"
+                android:layout_height="10dp" />
 
             <Button
                 android:id="@+id/recordDailyWeightButton_log"
                 android:layout_width="100dp"
                 android:layout_height="70dp"
-                android:backgroundTint="@color/buttons"
-                android:text="@string/record_weight_met"
                 android:layout_gravity="center_vertical"
-                android:gravity="center"/>
+                android:backgroundTint="@color/buttons"
+                android:gravity="center"
+                android:text="@string/record_weight_met" />
 
             <Space
                 android:layout_width="10dp"
-                android:layout_height="10dp"/>
+                android:layout_height="10dp" />
+
             <Button
                 android:id="@+id/captureMealButton_log"
                 android:layout_width="100dp"
                 android:layout_height="70dp"
-                android:backgroundTint="@color/buttons"
-                android:text="@string/capture_meal"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center"/>
+                android:backgroundTint="@color/buttons"
+                android:gravity="center"
+                android:text="@string/capture_meal" />
 
         </LinearLayout>
 

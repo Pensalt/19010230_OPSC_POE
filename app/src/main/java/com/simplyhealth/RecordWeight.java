@@ -78,7 +78,7 @@ public class RecordWeight extends AppCompatActivity {
                         weight = weight / 2.205; // Converting the value back to a metric system value.
                     }
 
-                    final double userWeight = weight;
+                    //final double userWeight = weight;
                     try {
                         final DatabaseReference captureUserInfo = db.getReference(mAuth.getCurrentUser().getUid()); // Getting the current user's UID
                         d = new DailyWeightInfo(recordDate,weight);
@@ -117,8 +117,8 @@ public class RecordWeight extends AppCompatActivity {
                         if (needToUpdate == true)
                         {
 
-                            //captureUserInfo.child("Daily Weight").child(key).child("weight").setValue(userWeight);
-                            captureUserInfo.child("Daily Weight").child(key).setValue(d);
+                            //captureUserInfo.child("Daily Weight").child(key).child("weight").setValue(userWeight); // doesn't work - creates new object
+                            captureUserInfo.child("Daily Weight").child(key).setValue(d); // doesn't work - creates new object
                             //Toast.makeText(RecordWeight.this, key, Toast.LENGTH_LONG).show();
 
                             //Log.d("tag",key);
@@ -127,7 +127,7 @@ public class RecordWeight extends AppCompatActivity {
                             captureUserInfo.child("Daily Weight").push().setValue(d);
                         }
 
-                        Toast.makeText(RecordWeight.this, "Daily weight successfully captured!", Toast.LENGTH_SHORT).show();
+                         Toast.makeText(RecordWeight.this, "Daily weight successfully captured!", Toast.LENGTH_SHORT).show();
 
                     } catch (Exception e){
                         Toast.makeText(RecordWeight.this, e.getMessage(), Toast.LENGTH_SHORT).show();

@@ -177,6 +177,9 @@ public class CaptureMeals extends AppCompatActivity {
         }
     }
 
+    // The following code is adapted from medium.com
+    // Author: Hasangi Kahaduwa
+    // Available at: https://medium.com/@hasangi/capture-image-or-choose-from-gallery-photos-implementation-for-android-a5ca59bc6883
     private boolean checkAndRequestPermissions() {
 
         int permissionWriteExternal = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);

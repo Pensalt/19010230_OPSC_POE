@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".CaptureMeals"
+        android:padding="5dp"
         android:orientation="vertical">
 
         <Space
@@ -101,6 +102,7 @@
             android:hint="@string/meal_cal"
             android:inputType="numberDecimal" />
 
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
@@ -114,6 +116,10 @@
             android:background="@color/buttons"
             android:text="@string/confirm"
             android:textColor="@color/black" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
     </LinearLayout>
 
 

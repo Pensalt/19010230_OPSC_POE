@@ -3,16 +3,14 @@ package com.simplyhealth;
 public class User {
     private String firstName;
     private String surname;
-    private double currentWeight;
     private double goalWeight;
     private double currentHeight;
     private double goalCalories;
     private Boolean useMetric;
 
-    public User(String firstName, String surname, double currentWeight, double goalWeight, double currentHeight, double goalCalories, Boolean useMetric) {
+    public User(String firstName, String surname, double goalWeight, double currentHeight, double goalCalories, Boolean useMetric) {
         this.firstName = firstName;
         this.surname = surname;
-        this.currentWeight = currentWeight;
         this.goalWeight = goalWeight;
         this.currentHeight = currentHeight;
         this.goalCalories = goalCalories;
@@ -35,14 +33,6 @@ public class User {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public double getCurrentWeight() {
-        return currentWeight;
-    }
-
-    public void setCurrentWeight(double currentWeight) {
-        this.currentWeight = currentWeight;
     }
 
     public double getGoalWeight() {

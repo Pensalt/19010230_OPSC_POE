@@ -15,6 +15,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -33,18 +39,23 @@ public class Log extends AppCompatActivity {
     FirebaseDatabase db = FirebaseDatabase.getInstance();
 
     TextView headingTV, weightOnDayTV, goalWeightTV, caloriesConsumedTV, dailyCalorieGoalTV, weightOnDayNumTV, caloriesOnDayNumTV
-    , goalWeightNumTV, goalCaloriesNumTV;
+            , goalWeightNumTV, goalCaloriesNumTV;
     CalendarView historyCalendarCV;
     Button recordDailyWeightBtn, captureMealBtn;
     ImageButton settingsImgBtn;
+    BarChart calChart, weightChart;
+    ArrayList<BarEntry> calorieEntry, weightEntry;
+    BarDataSet calorieSet, weightSet;
+    BarData calData, weightData;
 
     Boolean useMetric;
     User u;
     static DailyWeightInfo d = new DailyWeightInfo();
     MealBreakdown m = new MealBreakdown();
+    double goalCal, goalWeight;
 
-    public static void d(String tag, String key) {
-    }
+    //ArrayList CalxAxis;
+    //public static void d(String tag, String key) { } // remove
 
 
     @Override
@@ -68,6 +79,8 @@ public class Log extends AppCompatActivity {
         recordDailyWeightBtn = findViewById(R.id.recordDailyWeightButton_log);
         captureMealBtn = findViewById(R.id.captureMealButton_log);
         settingsImgBtn = findViewById(R.id.settingsImgBtn_log);
+        calChart = findViewById(R.id.calChart_log);
+
 
         settingsImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,12 +110,17 @@ public class Log extends AppCompatActivity {
 
         InitialDataPopulation();
 
+
+
         historyCalendarCV.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
                 try {
 
-                    final String selectedDate = i2 + "-" + (i1 +1) + "-" + i; // Getting the currently selected date and formatting as needed (dd-MM-yyyy). The plus 1 is necessary because Jan is 0 instead of 1
+                    calorieEntry = new ArrayList<>(); // Array list for the current and goal calorie amounts.
+                    calorieSet = new BarDataSet(calorieEntry,"");
+                    calorieEntry.add(new BarEntry((float) u.getGoalCalories(),1));
+                    final String selectedDate = i2 + "-" + (i1 + 1) + "-" + i; // Getting the currently selected date and formatting as needed (dd-MM-yyyy). The plus 1 is necessary because Jan is 0 instead of 1
 
                     DatabaseReference ref = db.getReference(mAuth.getCurrentUser().getUid());
                     ref.child("Daily Weight").addValueEventListener(new ValueEventListener() {
@@ -124,14 +142,16 @@ public class Log extends AppCompatActivity {
                                     if (u.getUseMetric() == false){
                                         double currentW = d.getWeight() * 2.205;
                                         weightOnDayNumTV.setText(currentW + "");
-                                        found = true;
-                                        break;
+                                        //found = true;
+                                        //break;
                                     }
                                     else
                                     {
                                         weightOnDayNumTV.setText(d.getWeight() + "");
-                                        found = true;
+                                        //found = true;
                                     }
+                                    found = true;
+                                    //break;
                                 }
                             }
 
@@ -158,6 +178,7 @@ public class Log extends AppCompatActivity {
                             double dailyTotalCal = 0;
 
                             Boolean found = false;
+
                             for (DataSnapshot daily : snapshot.getChildren()){
 
                                 m = daily.getValue(MealBreakdown.class);
@@ -172,11 +193,19 @@ public class Log extends AppCompatActivity {
 
                             if (found == false){
                                 caloriesOnDayNumTV.setText("NA");
+                                calorieEntry.add(new BarEntry(0,0));
                             }
                             else
                             {
                                 caloriesOnDayNumTV.setText(dailyTotalCal +"");
+                                calorieEntry.add(new BarEntry((float) dailyTotalCal,0));
                             }
+
+                            BarData data = new BarData(getCalXAxisValues(), calorieSet);
+                            calChart.setData(data);
+                            calChart.setDescription("My Chart");
+                            calChart.animateXY(2000, 2000);
+                            calChart.invalidate();
                         }
 
                         @Override
@@ -195,6 +224,10 @@ public class Log extends AppCompatActivity {
     // Method to populate the data for the day on load of the form.
     public void InitialDataPopulation(){
 
+        calorieEntry = new ArrayList<>(); // Array list for the current and goal calorie amounts.
+        calorieSet = new BarDataSet(calorieEntry,"");
+
+
         try {
             DatabaseReference ref = db.getReference(mAuth.getCurrentUser().getUid());
             ref.child("User Details").addValueEventListener(new ValueEventListener() {
@@ -209,16 +242,24 @@ public class Log extends AppCompatActivity {
                         goalWeightTV.setText(R.string.goal_weight_imp);
 
                         double impWeightGoal = u.getGoalWeight() * 2.205;
-                        goalCaloriesNumTV.setText(u.getGoalCalories() + "");
+                        //goalCaloriesNumTV.setText(u.getGoalCalories() + "");
                         goalWeightNumTV.setText(impWeightGoal + "");
 
                     } else {
                         useMetric = true;
                         goalWeightTV.setText(R.string.goal_weight_met);
                         goalWeightNumTV.setText(u.getGoalWeight() +"");
-                        goalCaloriesNumTV.setText(u.getGoalCalories()+"");
+                        //goalCaloriesNumTV.setText(u.getGoalCalories()+"");
                         weightOnDayTV.setText(R.string.weight_met);
+                        goalWeight = u.getGoalWeight();
                     }
+
+                    goalCaloriesNumTV.setText(u.getGoalCalories() + ""); // Showing the user's goal calories
+
+                    calorieEntry.add(new BarEntry((float) u.getGoalCalories(),1));
+
+                    //calorieEntry.add(new BarEntry(1, (float) u.getGoalCalories()));
+
                 }
 
                 @Override
@@ -250,7 +291,7 @@ public class Log extends AppCompatActivity {
                             }
                             else
                             {
-                                weightOnDayNumTV.setText(d.getWeight() + "");
+                                weightOnDayNumTV.setText(Math.round(d.getWeight()) + "");
                             }
                             found = true;
                             break;
@@ -293,11 +334,22 @@ public class Log extends AppCompatActivity {
 
                     if (found == false){
                         caloriesOnDayNumTV.setText("NA");
+                        calorieEntry.add(new BarEntry(0,0));
+
                     }
                     else
                     {
                         caloriesOnDayNumTV.setText(dailyTotalCal +"");
+                        calorieEntry.add(new BarEntry((float) dailyTotalCal,0));
+                        //calorieEntry.add(new BarEntry(0, (float) dailyTotalCal));
+
                     }
+
+                    BarData data = new BarData(getCalXAxisValues(), calorieSet);
+                    calChart.setData(data);
+                    calChart.setDescription("My Chart");
+                    calChart.animateXY(2000, 2000);
+                    calChart.invalidate();
                 }
 
                 @Override
@@ -307,11 +359,31 @@ public class Log extends AppCompatActivity {
             });
 
 
+
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
+        //BarData data = new BarData(getCalXAxisValues(), calorieSet);
+        //calChart.setData(data);
+        //calChart.setDescription("My Chart");
+        //calChart.animateXY(2000, 2000);
+        //calChart.invalidate();
+        //calorieSet = new BarDataSet(calorieEntry,"Calories");
+        //ArrayList<IBarDataSet> set = new ArrayList<>();
+        //set.add(calorieSet);
+        //calData = new BarData(set);
+        //calorieChart.setData(calData);
     }
 
+
+
+    private ArrayList getCalXAxisValues() {
+        ArrayList CalxAxis = new ArrayList();
+        CalxAxis.add("Current");
+        CalxAxis.add("Goal");
+        return CalxAxis;
+    }
 
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)

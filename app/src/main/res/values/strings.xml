@@ -35,6 +35,9 @@
     <string name="metric_switch">M</string>
     <string name="imperial_switch">I</string>
     <string name="measurement_system">Measurement System:</string>
+    <string name="bar_cal_consumed">Cal Today</string>
+    <string name="bar_cal_goal">Goal Cal</string>
+
 
 
 
