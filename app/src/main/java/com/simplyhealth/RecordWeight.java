@@ -24,7 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import static java.lang.Double.*;
 
@@ -53,7 +55,7 @@ public class RecordWeight extends AppCompatActivity {
         logoImg = findViewById(R.id.LogoImgView_cap);
 
 
-        needToUpdate = false;
+        //needToUpdate = false;
 
         mAuth = FirebaseAuth.getInstance();
         SetMeasurement(); // Calls the method to update the UI based on measurement system.
@@ -82,15 +84,14 @@ public class RecordWeight extends AppCompatActivity {
                     try {
                         final DatabaseReference captureUserInfo = db.getReference(mAuth.getCurrentUser().getUid()); // Getting the current user's UID
                         d = new DailyWeightInfo(recordDate,weight);
-
-
+                        needToUpdate = false;
+                        final double uploadWeight = weight;
                         //Boolean needToUpdate = false;
                         //String key ="";
 
                         captureUserInfo.child("Daily Weight").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
 
 
                                 for (DataSnapshot daily : snapshot.getChildren()){
@@ -105,6 +106,26 @@ public class RecordWeight extends AppCompatActivity {
                                     }
                                 }
 
+                                if (needToUpdate == true)
+                                {
+
+                                    //captureUserInfo.child("Daily Weight").child(key).child("weight").setValue(userWeight); // doesn't work - creates new object
+                                    //captureUserInfo.child("Daily Weight").child(key).setValue(d); // doesn't work - creates new object
+                                    //Toast.makeText(RecordWeight.this, key, Toast.LENGTH_LONG).show();
+
+                                    Map<String, Object> update = new HashMap<>();
+                                    String path = "Daily Weight/" + key + "/weight" ;
+                                    update.put(path, uploadWeight);
+                                    captureUserInfo.updateChildren(update);
+
+                                    Toast.makeText(RecordWeight.this, "Daily weight successfully updated!", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    captureUserInfo.child("Daily Weight").push().setValue(d);
+                                    Toast.makeText(RecordWeight.this, "Daily weight successfully captured!", Toast.LENGTH_SHORT).show();
+
+                                }
+
 
                             }
 
@@ -114,20 +135,9 @@ public class RecordWeight extends AppCompatActivity {
                             }
                         }) ;
 
-                        if (needToUpdate == true)
-                        {
 
-                            //captureUserInfo.child("Daily Weight").child(key).child("weight").setValue(userWeight); // doesn't work - creates new object
-                            captureUserInfo.child("Daily Weight").child(key).setValue(d); // doesn't work - creates new object
-                            //Toast.makeText(RecordWeight.this, key, Toast.LENGTH_LONG).show();
 
-                            //Log.d("tag",key);
-                        }
-                        else{
-                            captureUserInfo.child("Daily Weight").push().setValue(d);
-                        }
-
-                         Toast.makeText(RecordWeight.this, "Daily weight successfully captured!", Toast.LENGTH_SHORT).show();
+//                         Toast.makeText(RecordWeight.this, "Daily weight successfully captured!", Toast.LENGTH_SHORT).show();
 
                     } catch (Exception e){
                         Toast.makeText(RecordWeight.this, e.getMessage(), Toast.LENGTH_SHORT).show();

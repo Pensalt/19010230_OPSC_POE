@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -44,18 +45,12 @@ public class Log extends AppCompatActivity {
     Button recordDailyWeightBtn, captureMealBtn;
     ImageButton settingsImgBtn;
     BarChart calChart, weightChart;
-    ArrayList<BarEntry> calorieEntry, weightEntry;
-    BarDataSet calorieSet, weightSet;
-    BarData calData, weightData;
 
     Boolean useMetric;
     User u;
     static DailyWeightInfo d = new DailyWeightInfo();
     MealBreakdown m = new MealBreakdown();
-    double goalCal, goalWeight;
-
-    //ArrayList CalxAxis;
-    //public static void d(String tag, String key) { } // remove
+    double goalCal, goalWeight, currentCal, currentWeight;
 
 
     @Override
@@ -80,6 +75,7 @@ public class Log extends AppCompatActivity {
         captureMealBtn = findViewById(R.id.captureMealButton_log);
         settingsImgBtn = findViewById(R.id.settingsImgBtn_log);
         calChart = findViewById(R.id.calChart_log);
+        weightChart = findViewById(R.id.weightChart_log);
 
 
         settingsImgBtn.setOnClickListener(new View.OnClickListener() {
@@ -98,8 +94,7 @@ public class Log extends AppCompatActivity {
                 startActivity(toCaptureMeal);
             }
         });
-
-
+        
         recordDailyWeightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,18 +103,21 @@ public class Log extends AppCompatActivity {
             }
         });
 
-        InitialDataPopulation();
-
-
+        InitialDataPopulation(); // Runs the method which populates data on load of the activity.
 
         historyCalendarCV.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
                 try {
 
-                    calorieEntry = new ArrayList<>(); // Array list for the current and goal calorie amounts.
-                    calorieSet = new BarDataSet(calorieEntry,"");
-                    calorieEntry.add(new BarEntry((float) u.getGoalCalories(),1));
+                    // Initialising current calories to 0 and goal calories to the user's goal calories.
+                    currentCal = 0;
+                    goalCal = u.getGoalCalories();
+
+                    // Initialising current weight to 0 and goal weight to the user's goal weight.
+                    currentWeight = 0;
+                    goalWeight = u.getGoalWeight();
+
                     final String selectedDate = i2 + "-" + (i1 + 1) + "-" + i; // Getting the currently selected date and formatting as needed (dd-MM-yyyy). The plus 1 is necessary because Jan is 0 instead of 1
 
                     DatabaseReference ref = db.getReference(mAuth.getCurrentUser().getUid());
@@ -131,7 +129,6 @@ public class Log extends AppCompatActivity {
                             //SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
                             //String currentDate = df.format(selected);
 
-
                             Boolean found = false;
                             for (DataSnapshot daily : snapshot.getChildren()){
 
@@ -142,24 +139,24 @@ public class Log extends AppCompatActivity {
                                     if (u.getUseMetric() == false){
                                         double currentW = d.getWeight() * 2.205;
                                         weightOnDayNumTV.setText(currentW + "");
-                                        //found = true;
-                                        //break;
+                                        currentWeight = currentW; // Setting the user's current weight value to the imperial value for current weight.
                                     }
                                     else
                                     {
                                         weightOnDayNumTV.setText(d.getWeight() + "");
-                                        //found = true;
+                                        currentWeight = d.getWeight(); // Setting the user's current weight value to the weight value from the current day.
                                     }
                                     found = true;
-                                    //break;
+                                    break;
                                 }
                             }
 
                             if (found == false){
                                 weightOnDayNumTV.setText("NA");
-                                //caloriesOnDayNumTV.setText("NA");
+                                currentWeight = 0; // not sure if needed
                             }
 
+                            generateWeightGraph(currentWeight, goalWeight); // Calling the method to generate the weight bar graph.
                         }
 
                         @Override
@@ -193,19 +190,14 @@ public class Log extends AppCompatActivity {
 
                             if (found == false){
                                 caloriesOnDayNumTV.setText("NA");
-                                calorieEntry.add(new BarEntry(0,0));
+                                currentCal = 0; // Setting current calories to 0 if the user has not yet recorded calories for the day. // might not be necessary
                             }
                             else
                             {
                                 caloriesOnDayNumTV.setText(dailyTotalCal +"");
-                                calorieEntry.add(new BarEntry((float) dailyTotalCal,0));
+                                currentCal = dailyTotalCal; // Setting current calories to the daily total calorie count.
                             }
-
-                            BarData data = new BarData(getCalXAxisValues(), calorieSet);
-                            calChart.setData(data);
-                            calChart.setDescription("My Chart");
-                            calChart.animateXY(2000, 2000);
-                            calChart.invalidate();
+                            generateCalorieGraph(currentCal,goalCal); // Calling the method to generate the calorie graph.
                         }
 
                         @Override
@@ -216,16 +208,19 @@ public class Log extends AppCompatActivity {
                 } catch (Exception e){
                     Toast.makeText(Log.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }
 
     // Method to populate the data for the day on load of the form.
     public void InitialDataPopulation(){
+        // Initialising current and goal calories to 0.
+        currentCal = 0;
+        goalCal = 0;
 
-        calorieEntry = new ArrayList<>(); // Array list for the current and goal calorie amounts.
-        calorieSet = new BarDataSet(calorieEntry,"");
+        // Initialising current and goal weight to 0.
+        currentWeight = 0;
+        goalWeight = 0;
 
 
         try {
@@ -242,24 +237,20 @@ public class Log extends AppCompatActivity {
                         goalWeightTV.setText(R.string.goal_weight_imp);
 
                         double impWeightGoal = u.getGoalWeight() * 2.205;
-                        //goalCaloriesNumTV.setText(u.getGoalCalories() + "");
                         goalWeightNumTV.setText(impWeightGoal + "");
+                        goalWeight = impWeightGoal; // Setting imperial goal weight based on user's goal weight
 
                     } else {
                         useMetric = true;
                         goalWeightTV.setText(R.string.goal_weight_met);
                         goalWeightNumTV.setText(u.getGoalWeight() +"");
-                        //goalCaloriesNumTV.setText(u.getGoalCalories()+"");
                         weightOnDayTV.setText(R.string.weight_met);
-                        goalWeight = u.getGoalWeight();
+                        goalWeight = u.getGoalWeight(); // Setting metric goal weight based on user's goal weight
                     }
 
                     goalCaloriesNumTV.setText(u.getGoalCalories() + ""); // Showing the user's goal calories
 
-                    calorieEntry.add(new BarEntry((float) u.getGoalCalories(),1));
-
-                    //calorieEntry.add(new BarEntry(1, (float) u.getGoalCalories()));
-
+                    goalCal = u.getGoalCalories(); // Setting goal calories based on the user's goal calories
                 }
 
                 @Override
@@ -282,16 +273,16 @@ public class Log extends AppCompatActivity {
                         d = daily.getValue(DailyWeightInfo.class);
 
                         if (d.getCaptureDate().equals(currentDate)){
-                            //u.setCurrentWeight(d.getWeight()); // Updating the user's current weight.
 
-                            //ref.child("User Details").child("currentWeight").
                             if (useMetric == false){
                                 double currentW = d.getWeight() * 2.205;
                                 weightOnDayNumTV.setText(currentW + "");
+                                currentWeight = currentW; // Setting the user's current weight value to the imperial value for current weight.
                             }
                             else
                             {
                                 weightOnDayNumTV.setText(Math.round(d.getWeight()) + "");
+                                currentWeight = d.getWeight(); // Setting the user's current weight value to the weight value from the current day.
                             }
                             found = true;
                             break;
@@ -300,8 +291,10 @@ public class Log extends AppCompatActivity {
 
                     if (found == false){
                         weightOnDayNumTV.setText("NA");
-                        //caloriesOnDayNumTV.setText("NA");
+                        currentWeight = 0; // might not be necessary
                     }
+
+                    generateWeightGraph(currentWeight, goalWeight);
                 }
 
                 @Override
@@ -334,22 +327,14 @@ public class Log extends AppCompatActivity {
 
                     if (found == false){
                         caloriesOnDayNumTV.setText("NA");
-                        calorieEntry.add(new BarEntry(0,0));
-
+                        currentCal = 0; // Setting current calories to 0 if the user has not yet recorded calories for the day. // might not be necessary
                     }
                     else
                     {
                         caloriesOnDayNumTV.setText(dailyTotalCal +"");
-                        calorieEntry.add(new BarEntry((float) dailyTotalCal,0));
-                        //calorieEntry.add(new BarEntry(0, (float) dailyTotalCal));
-
-                    }
-
-                    BarData data = new BarData(getCalXAxisValues(), calorieSet);
-                    calChart.setData(data);
-                    calChart.setDescription("My Chart");
-                    calChart.animateXY(2000, 2000);
-                    calChart.invalidate();
+                        currentCal = dailyTotalCal; // Setting current calories to the daily total calorie count.
+                    };
+                    generateCalorieGraph(currentCal, goalCal);
                 }
 
                 @Override
@@ -363,33 +348,70 @@ public class Log extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
-        //BarData data = new BarData(getCalXAxisValues(), calorieSet);
-        //calChart.setData(data);
-        //calChart.setDescription("My Chart");
-        //calChart.animateXY(2000, 2000);
-        //calChart.invalidate();
-        //calorieSet = new BarDataSet(calorieEntry,"Calories");
-        //ArrayList<IBarDataSet> set = new ArrayList<>();
-        //set.add(calorieSet);
-        //calData = new BarData(set);
-        //calorieChart.setData(calData);
     }
 
 
 
-    private ArrayList getCalXAxisValues() {
-        ArrayList CalxAxis = new ArrayList();
-        CalxAxis.add("Current");
-        CalxAxis.add("Goal");
-        return CalxAxis;
+    private ArrayList getXAxisValues() {
+        ArrayList xAxis = new ArrayList();
+        xAxis.add("Current");
+        xAxis.add("Goal");
+        return xAxis;
+    }
+
+    // Method to handle the generation of the calorie bar graph.
+    public void generateCalorieGraph(double currCal, double gCal){
+        // Declaring BarEntry for current and goal calories.
+        BarEntry curr = new BarEntry((float) currCal, 0);
+        BarEntry goal = new BarEntry((float) gCal, 1);
+
+        // Declaring array list of BarEntries and adding the current and goal BarEntries.
+        ArrayList<BarEntry> calorieEntries = new ArrayList<>();
+        calorieEntries.add(curr);
+        calorieEntries.add(goal);
+
+        // Declaring BarddtaSet and defining its colours
+        BarDataSet calorieSet = new BarDataSet(calorieEntries, "Calories");
+        calorieSet.setColor(Color.rgb(154,202,60));
+
+        // Declaring BarData
+        BarData calData = new BarData(getXAxisValues(), calorieSet);
+
+        // Initialising the bar graph.
+        calChart.setData(calData);
+        calChart.setDescription("");
+        calChart.animateXY(2000, 2000);
+        calChart.invalidate();
+    }
+
+    // Method to handle the generation of the weight bar graph.
+    public void generateWeightGraph(double currWeight, double gWeight){
+        // Declaring BarEntry for current and goal weight.
+        BarEntry curr = new BarEntry((float) currWeight, 0);
+        BarEntry goal = new BarEntry((float) gWeight, 1);
+
+        // Declaring array list of BarEntries and adding the current and goal BarEntries.
+        ArrayList<BarEntry> weightEntries = new ArrayList<>();
+        weightEntries.add(curr);
+        weightEntries.add(goal);
+
+        // Declaring BarDataSet and defining its   colours
+        BarDataSet weightSet = new BarDataSet(weightEntries, "Weight");
+        weightSet.setColor(Color.rgb(154,202,60));
+
+        // Declaring BarData
+        BarData weightData = new BarData(getXAxisValues(), weightSet);
+
+        // Initialising the bar graph.
+        weightChart.setData(weightData);
+        weightChart.setDescription("");
+        weightChart.animateXY(2000, 2000);
+        weightChart.invalidate();
     }
 
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     void Resume() {
-        //super.onResume();
-        //weightOnDayNumTV.setText("");
         InitialDataPopulation();
     }
 }

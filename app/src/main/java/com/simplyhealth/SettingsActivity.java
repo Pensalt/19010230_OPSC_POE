@@ -1,4 +1,4 @@
-package com.simplyhealth;
+  package com.simplyhealth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +25,7 @@ public class   SettingsActivity extends AppCompatActivity {
     FirebaseDatabase db = FirebaseDatabase.getInstance();
 
     TextView firstNameTV, surnameTV, currentHeightTV, goalWeightTV, dailyCalorieGoalTV, metricChoiceTV, emailTV;
-    EditText firstNameET, surnameET, currentHeightET, currentWeightET, goalWeightET, dailyCalorieGoalET, emailET;
+    EditText firstNameET, surnameET, currentHeightET, goalWeightET, dailyCalorieGoalET, emailET;
     ImageView logoImg;
     Button confirmBtn;
     Switch metricSwitch;
