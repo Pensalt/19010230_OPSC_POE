@@ -11,13 +11,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -36,11 +37,10 @@ import java.util.Locale;
 
 public class Log extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseDatabase db = FirebaseDatabase.getInstance();
 
-    TextView headingTV, weightOnDayTV, goalWeightTV, caloriesConsumedTV, dailyCalorieGoalTV, weightOnDayNumTV, caloriesOnDayNumTV
-            , goalWeightNumTV, goalCaloriesNumTV;
+    TextView headingTV, weightOnDayTV, goalWeightTV, caloriesConsumedTV, dailyCalorieGoalTV, weightOnDayNumTV, caloriesOnDayNumTV, goalWeightNumTV, goalCaloriesNumTV, calGraphHeadingTV, weightGraphHeadingTV;
     CalendarView historyCalendarCV;
     Button recordDailyWeightBtn, captureMealBtn;
     ImageButton settingsImgBtn;
@@ -57,9 +57,6 @@ public class Log extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
-        mAuth = FirebaseAuth.getInstance();
-        final FirebaseDatabase db = FirebaseDatabase.getInstance();
-
 
         headingTV = findViewById(R.id.simplyHealthTV_log);
         weightOnDayTV = findViewById(R.id.weightOnDayTV_log);
@@ -76,6 +73,8 @@ public class Log extends AppCompatActivity {
         settingsImgBtn = findViewById(R.id.settingsImgBtn_log);
         calChart = findViewById(R.id.calChart_log);
         weightChart = findViewById(R.id.weightChart_log);
+        calGraphHeadingTV = findViewById(R.id.calGraphHeading_log);
+        weightGraphHeadingTV = findViewById(R.id.weightGraphHeading_log);
 
 
         settingsImgBtn.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +93,7 @@ public class Log extends AppCompatActivity {
                 startActivity(toCaptureMeal);
             }
         });
-        
+
         recordDailyWeightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,8 +101,6 @@ public class Log extends AppCompatActivity {
                 startActivity(toRecordWeight);
             }
         });
-
-        InitialDataPopulation(); // Runs the method which populates data on load of the activity.
 
         historyCalendarCV.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -118,6 +115,9 @@ public class Log extends AppCompatActivity {
                     currentWeight = 0;
                     goalWeight = u.getGoalWeight();
 
+                    // The following line of code is an adaptation from
+                    // Available at: https://www.youtube.com/watch?v=hHjFIG0TtA0&t=331s
+                    // Author: CodingWithMitch
                     final String selectedDate = i2 + "-" + (i1 + 1) + "-" + i; // Getting the currently selected date and formatting as needed (dd-MM-yyyy). The plus 1 is necessary because Jan is 0 instead of 1
 
                     DatabaseReference ref = db.getReference(mAuth.getCurrentUser().getUid());
@@ -125,24 +125,18 @@ public class Log extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                            //long selected = historyCalendarCV.getDate();
-                            //SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-                            //String currentDate = df.format(selected);
-
-                            Boolean found = false;
-                            for (DataSnapshot daily : snapshot.getChildren()){
+                            Boolean found = false; // Flag for if the user has information on the specified day.
+                            for (DataSnapshot daily : snapshot.getChildren()) {
 
                                 d = daily.getValue(DailyWeightInfo.class);
 
-                                if (d.getCaptureDate().equals(selectedDate)){
+                                if (d.getCaptureDate().equals(selectedDate)) {
 
-                                    if (u.getUseMetric() == false){
+                                    if (!u.getUseMetric()) {
                                         double currentW = d.getWeight() * 2.205;
                                         weightOnDayNumTV.setText(currentW + "");
                                         currentWeight = currentW; // Setting the user's current weight value to the imperial value for current weight.
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         weightOnDayNumTV.setText(d.getWeight() + "");
                                         currentWeight = d.getWeight(); // Setting the user's current weight value to the weight value from the current day.
                                     }
@@ -151,9 +145,9 @@ public class Log extends AppCompatActivity {
                                 }
                             }
 
-                            if (found == false){
+                            if (!found) {
                                 weightOnDayNumTV.setText("NA");
-                                currentWeight = 0; // not sure if needed
+                                currentWeight = 0;
                             }
 
                             generateWeightGraph(currentWeight, goalWeight); // Calling the method to generate the weight bar graph.
@@ -169,35 +163,33 @@ public class Log extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                            //Long selected = historyCalendarCV.getDate();
-                            //SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-                            //String selectedDate = df.format(selected);
-                            double dailyTotalCal = 0;
+                            double dailyTotalCal = 0; // Initialising the current day's total calorie count to 0.
 
                             Boolean found = false;
 
-                            for (DataSnapshot daily : snapshot.getChildren()){
+                            // Iterating through all the captured meals.
+                            for (DataSnapshot daily : snapshot.getChildren()) {
 
                                 m = daily.getValue(MealBreakdown.class);
 
-                                if (m.getCaptureDate().equals(selectedDate)){
+                                // Only meals for the selected date are shown
+                                if (m.getCaptureDate().equals(selectedDate)) {
 
-                                    dailyTotalCal += m.getCalories();
+                                    dailyTotalCal += m.getCalories(); // Summing the calories for the selected day.
                                     found = true;
                                 }
                             }
 
 
-                            if (found == false){
+                            if (!found) {
                                 caloriesOnDayNumTV.setText("NA");
                                 currentCal = 0; // Setting current calories to 0 if the user has not yet recorded calories for the day. // might not be necessary
-                            }
-                            else
-                            {
-                                caloriesOnDayNumTV.setText(dailyTotalCal +"");
+                            } else {
+
+                                caloriesOnDayNumTV.setText(dailyTotalCal + "");
                                 currentCal = dailyTotalCal; // Setting current calories to the daily total calorie count.
                             }
-                            generateCalorieGraph(currentCal,goalCal); // Calling the method to generate the calorie graph.
+                            generateCalorieGraph(currentCal, goalCal); // Calling the method to generate the calorie graph.
                         }
 
                         @Override
@@ -205,15 +197,18 @@ public class Log extends AppCompatActivity {
                             Toast.makeText(Log.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
                     });
-                } catch (Exception e){
+                } catch (Exception e) {
                     Toast.makeText(Log.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        InitialDataPopulation(); // Runs the method which populates data on load of the activity.
+
     }
 
     // Method to populate the data for the day on load of the form.
-    public void InitialDataPopulation(){
+    public void InitialDataPopulation() {
         // Initialising current and goal calories to 0.
         currentCal = 0;
         goalCal = 0;
@@ -231,7 +226,7 @@ public class Log extends AppCompatActivity {
 
                     u = snapshot.getValue(User.class);
 
-                    if (u.getUseMetric() == false){
+                    if (!u.getUseMetric()) {
                         useMetric = false;
                         weightOnDayTV.setText(R.string.weight_imp);
                         goalWeightTV.setText(R.string.goal_weight_imp);
@@ -243,7 +238,7 @@ public class Log extends AppCompatActivity {
                     } else {
                         useMetric = true;
                         goalWeightTV.setText(R.string.goal_weight_met);
-                        goalWeightNumTV.setText(u.getGoalWeight() +"");
+                        goalWeightNumTV.setText(u.getGoalWeight() + "");
                         weightOnDayTV.setText(R.string.weight_met);
                         goalWeight = u.getGoalWeight(); // Setting metric goal weight based on user's goal weight
                     }
@@ -268,20 +263,18 @@ public class Log extends AppCompatActivity {
                     String currentDate = df.format(current);
                     Boolean found = false;
 
-                    for (DataSnapshot daily : snapshot.getChildren()){
+                    for (DataSnapshot daily : snapshot.getChildren()) {
 
                         d = daily.getValue(DailyWeightInfo.class);
 
-                        if (d.getCaptureDate().equals(currentDate)){
+                        if (d.getCaptureDate().equals(currentDate)) {
 
-                            if (useMetric == false){
+                            if (!useMetric) {
                                 double currentW = d.getWeight() * 2.205;
                                 weightOnDayNumTV.setText(currentW + "");
                                 currentWeight = currentW; // Setting the user's current weight value to the imperial value for current weight.
-                            }
-                            else
-                            {
-                                weightOnDayNumTV.setText(Math.round(d.getWeight()) + "");
+                            } else {
+                                weightOnDayNumTV.setText(d.getWeight() + "");
                                 currentWeight = d.getWeight(); // Setting the user's current weight value to the weight value from the current day.
                             }
                             found = true;
@@ -289,12 +282,12 @@ public class Log extends AppCompatActivity {
                         }
                     }
 
-                    if (found == false){
+                    if (!found) {
                         weightOnDayNumTV.setText("NA");
-                        currentWeight = 0; // might not be necessary
+                        currentWeight = 0;
                     }
 
-                    generateWeightGraph(currentWeight, goalWeight);
+                    generateWeightGraph(currentWeight, goalWeight); // Calling the method to generate the weight graph.
                 }
 
                 @Override
@@ -313,11 +306,11 @@ public class Log extends AppCompatActivity {
                     double dailyTotalCal = 0;
 
                     Boolean found = false;
-                    for (DataSnapshot daily : snapshot.getChildren()){
+                    for (DataSnapshot daily : snapshot.getChildren()) {
 
                         m = daily.getValue(MealBreakdown.class);
 
-                        if (m.getCaptureDate().equals(currentDate)){
+                        if (m.getCaptureDate().equals(currentDate)) {
 
                             dailyTotalCal += m.getCalories();
                             found = true;
@@ -325,16 +318,15 @@ public class Log extends AppCompatActivity {
                     }
 
 
-                    if (found == false){
+                    if (!found) {
                         caloriesOnDayNumTV.setText("NA");
                         currentCal = 0; // Setting current calories to 0 if the user has not yet recorded calories for the day. // might not be necessary
-                    }
-                    else
-                    {
-                        caloriesOnDayNumTV.setText(dailyTotalCal +"");
+                    } else {
+                        caloriesOnDayNumTV.setText(dailyTotalCal + "");
                         currentCal = dailyTotalCal; // Setting current calories to the daily total calorie count.
-                    };
-                    generateCalorieGraph(currentCal, goalCal);
+                    }
+
+                    generateCalorieGraph(currentCal, goalCal); // Calling the method to generate the calorie graph.
                 }
 
                 @Override
@@ -344,14 +336,15 @@ public class Log extends AppCompatActivity {
             });
 
 
-
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
 
-
+    // The following code is adapted from
+    // Available at: https://medium.com/@mobindustry/how-to-quickly-implement-beautiful-charts-in-your-android-app-cf4caf050772
+    // Author: Mobindustry
     private ArrayList getXAxisValues() {
         ArrayList xAxis = new ArrayList();
         xAxis.add("Current");
@@ -360,7 +353,12 @@ public class Log extends AppCompatActivity {
     }
 
     // Method to handle the generation of the calorie bar graph.
-    public void generateCalorieGraph(double currCal, double gCal){
+    public void generateCalorieGraph(double currCal, double gCal) {
+
+        // The following code is adapted from
+        // Available at: https://medium.com/@mobindustry/how-to-quickly-implement-beautiful-charts-in-your-android-app-cf4caf050772
+        // Author: Mobindustry
+
         // Declaring BarEntry for current and goal calories.
         BarEntry curr = new BarEntry((float) currCal, 0);
         BarEntry goal = new BarEntry((float) gCal, 1);
@@ -370,22 +368,45 @@ public class Log extends AppCompatActivity {
         calorieEntries.add(curr);
         calorieEntries.add(goal);
 
-        // Declaring BarddtaSet and defining its colours
+        // Declaring BarDataSet and defining its colours
         BarDataSet calorieSet = new BarDataSet(calorieEntries, "Calories");
-        calorieSet.setColor(Color.rgb(154,202,60));
+        calorieSet.setColor(Color.rgb(154, 202, 60)); // Setting the colour of the set to the green accent used throughout the app.
 
         // Declaring BarData
         BarData calData = new BarData(getXAxisValues(), calorieSet);
 
         // Initialising the bar graph.
         calChart.setData(calData);
+
+        // The following code is adapted from
+        // Available at: https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/main/java/com/xxmassdeveloper/mpchartexample/BarChartActivity.java
+        // Author: PhilJay
+
+        // Formatting the X Axis position to the bottom.
+        XAxis x = calChart.getXAxis();
+        x.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        // Setting the axis to start at 0 causes issues when the values for current and goal are similar so it has been commented out.
+        // This is unfortunate as it is more visually appealing when the graph starts at 0
+        /*// Formatting the left and right Y Axis to start at 0.
+        YAxis rightAxis = calChart.getAxisRight();
+        rightAxis.setAxisMinValue(0f);
+        YAxis leftAxis = calChart.getAxisLeft();
+        leftAxis.setAxisMinValue(0f)*/;
+
         calChart.setDescription("");
         calChart.animateXY(2000, 2000);
         calChart.invalidate();
+
     }
 
     // Method to handle the generation of the weight bar graph.
-    public void generateWeightGraph(double currWeight, double gWeight){
+    public void generateWeightGraph(double currWeight, double gWeight) {
+
+        // The following code is adapted from
+        // Available at: https://medium.com/@mobindustry/how-to-quickly-implement-beautiful-charts-in-your-android-app-cf4caf050772
+        // Author: Mobindustry
+
         // Declaring BarEntry for current and goal weight.
         BarEntry curr = new BarEntry((float) currWeight, 0);
         BarEntry goal = new BarEntry((float) gWeight, 1);
@@ -397,13 +418,30 @@ public class Log extends AppCompatActivity {
 
         // Declaring BarDataSet and defining its   colours
         BarDataSet weightSet = new BarDataSet(weightEntries, "Weight");
-        weightSet.setColor(Color.rgb(154,202,60));
+        weightSet.setColor(Color.rgb(154, 202, 60)); // Setting the colour of the set to the green accent used throughout the app.
 
         // Declaring BarData
         BarData weightData = new BarData(getXAxisValues(), weightSet);
 
         // Initialising the bar graph.
         weightChart.setData(weightData);
+
+        // The following code is adapted from
+        // Available at: https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartExample/src/main/java/com/xxmassdeveloper/mpchartexample/BarChartActivity.java
+        // Author: PhilJay
+
+        // Formatting the X Axis position to the bottom.
+        XAxis x = weightChart.getXAxis();
+        x.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        // Setting the axis to start at 0 causes issues when the values for current and goal are similar so it has been commented out.
+        // This is unfortunate as it is more visually appealing when the graph starts at 0
+        /*// Formatting the left and right Y Axis to start at 0.
+        YAxis rightAxis = weightChart.getAxisRight();
+        rightAxis.setAxisMinValue(0f);
+        YAxis leftAxis = weightChart.getAxisLeft();
+        leftAxis.setAxisMinValue(0f);*/
+
         weightChart.setDescription("");
         weightChart.animateXY(2000, 2000);
         weightChart.invalidate();

@@ -43,7 +43,7 @@ import static java.lang.Double.parseDouble;
 
 public class CaptureMeals extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseDatabase db = FirebaseDatabase.getInstance();
 
     ImageView logoImg, captureMealImg;
@@ -56,8 +56,6 @@ public class CaptureMeals extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture_meals);
-        mAuth = FirebaseAuth.getInstance();
-        final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
         logoImg = findViewById(R.id.LogoImgView_meal);
         captureMealImg = findViewById(R.id.mealImage_meal);
@@ -68,10 +66,9 @@ public class CaptureMeals extends AppCompatActivity {
         mealBreakdownTV = findViewById(R.id.mealBreakdownTV_meal);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkAndRequestPermissions();
-        } else { //permission is automatically granted on sdk<23 upon installation
-
-
+            handlePermissions();
+        } else {
+            //permission is automatically granted on sdk<23 upon installation
         }
 
         confirmBtn.setOnClickListener(new View.OnClickListener() {
@@ -83,18 +80,15 @@ public class CaptureMeals extends AppCompatActivity {
 
                 double calories = Double.parseDouble(calorieET.getText().toString());
 
-                if (calories <= 0)
-                {
+                if (calories <= 0) {
                     Toast.makeText(CaptureMeals.this, "Please enter valid information!", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     try {
                         DatabaseReference captureUserInfo = db.getReference(mAuth.getCurrentUser().getUid()); // Getting the current user's UID
-                        MealBreakdown m = new MealBreakdown(recordDate,calories);
+                        MealBreakdown m = new MealBreakdown(recordDate, calories);
                         captureUserInfo.child("Meal Info").push().setValue(m);
                         Toast.makeText(CaptureMeals.this, "Meal successfully captured!", Toast.LENGTH_SHORT).show();
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         Toast.makeText(CaptureMeals.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -109,11 +103,11 @@ public class CaptureMeals extends AppCompatActivity {
         });
     }
 
-    // The following code is adapted from medium.com
-    // Author: Hasangi Kahaduwa
+    // The following code is adapted from
     // Available at: https://medium.com/@hasangi/capture-image-or-choose-from-gallery-photos-implementation-for-android-a5ca59bc6883
+    // Author: Hasangi Kahaduwa
     private void selectImage(Context context) {
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Upload your meal image:");
@@ -129,7 +123,7 @@ public class CaptureMeals extends AppCompatActivity {
 
                 } else if (options[item].equals("Choose from Gallery")) {
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhoto , 1);
+                    startActivityForResult(pickPhoto, 1);
 
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -139,9 +133,9 @@ public class CaptureMeals extends AppCompatActivity {
         builder.show();
     }
 
-    // The following code is adapted from medium.com
-    // Author: Hasangi Kahaduwa
+    // The following code is adapted from
     // Available at: https://medium.com/@hasangi/capture-image-or-choose-from-gallery-photos-implementation-for-android-a5ca59bc6883
+    // Author: Hasangi Kahaduwa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -177,10 +171,10 @@ public class CaptureMeals extends AppCompatActivity {
         }
     }
 
-    // The following code is adapted from medium.com
-    // Author: Hasangi Kahaduwa
-    // Available at: https://medium.com/@hasangi/capture-image-or-choose-from-gallery-photos-implementation-for-android-a5ca59bc6883
-    private boolean checkAndRequestPermissions() {
+    // The following code is adapted from
+    // Available at:https://www.geeksforgeeks.org/android-how-to-request-permissions-in-android-application/
+    // Author: Aman Neekhara
+    private boolean handlePermissions() {
 
         int permissionWriteExternal = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int permissionReadExternal = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);

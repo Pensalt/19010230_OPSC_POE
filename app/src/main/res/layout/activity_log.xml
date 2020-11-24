@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/background_primary"
-    >
+    android:background="@color/background_primary">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,19 +14,31 @@
         tools:context=".Log">
 
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <Space
+                android:layout_width="15dp"
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/simplyHealthTV_log"
-                android:layout_width="318dp"
+                android:layout_width="262dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/simply_health"
                 android:textColor="@color/green"
                 android:textSize="40dp" />
+
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="wrap_content" />
 
             <ImageButton
                 android:id="@+id/settingsImgBtn_log"
@@ -36,23 +47,24 @@
                 android:layout_gravity="end"
                 android:backgroundTint="@color/background_primary"
                 android:src="@drawable/settings" />
+
         </LinearLayout>
 
 
         <CalendarView
             android:id="@+id/historyCalenderView_log"
             android:layout_width="match_parent"
-            android:layout_height="309dp"
+            android:layout_height="310dp"
             android:background="@color/background_primary"
             android:backgroundTint="@color/background_primary"
             android:focusedMonthDateColor="@color/design_default_color_on_secondary"
             android:foregroundTint="@color/background_primary"
-            android:maxDate="19/11/2077"
+            android:maxDate="10/12/2077"
             android:minDate="01/01/2020" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="44dp" />
+            android:layout_height="45dp" />
 
 
         <LinearLayout
@@ -187,30 +199,56 @@
             android:layout_width="match_parent"
             android:layout_height="35dp" />
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/calChart_log"
-                android:layout_width="320dp"
-                android:layout_height="250dp"
-                android:clickable="false"
-                android:focusable="false"
-                android:layout_gravity="center"
-                />
+        <TextView
+            android:id="@+id/calGraphHeading_log"
+            android:layout_width="248dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cal_graph_heading"
+            android:textColor="@color/black"
+            android:textSize="24dp" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/calChart_log"
+            android:layout_width="320dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:focusable="false" />
 
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
+        <TextView
+            android:id="@+id/weightGraphHeading_log"
+            android:layout_width="248dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/weight_graph_heading"
+            android:textColor="@color/black"
+            android:textSize="24dp" />
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/weightChart_log"
-                android:layout_width="330dp"
-                android:layout_height="250dp"
-                android:clickable="false"
-                android:focusable="false"
-                android:layout_gravity="center"
-                />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/weightChart_log"
+            android:layout_width="330dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:focusable="false" />
 
         <Space
             android:layout_width="match_parent"
@@ -252,8 +290,5 @@
                 android:text="@string/capture_meal" />
 
         </LinearLayout>
-
-
     </LinearLayout>
-
 </ScrollView>

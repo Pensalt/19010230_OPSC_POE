@@ -37,6 +37,7 @@
             android:background="@color/background_primary"
             android:backgroundTint="@color/background_primary"
             app:cardCornerRadius="5dp">
+
             <ImageView
                 android:id="@+id/mealImage_meal"
                 android:layout_width="300dp"

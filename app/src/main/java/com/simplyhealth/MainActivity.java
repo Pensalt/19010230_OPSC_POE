@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -45,7 +44,7 @@ public class  MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String email = emailET.getText().toString().trim();
+                String email = emailET.getText().toString().trim(); // trim() is to remove any leading or trailing whitespace in the email.
                 String password = passwordET.getText().toString();
 
                 if (email.equals("") || password.equals(""))
@@ -64,7 +63,6 @@ public class  MainActivity extends AppCompatActivity {
                                     emailET.getText().clear();
                                     passwordET.getText().clear();
                                     Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                                    // wait like 1.5 seconds
                                     Intent goToLog = new Intent(MainActivity.this,Log.class);
                                     startActivity(goToLog);
                                 }
@@ -88,7 +86,7 @@ public class  MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 emailET.getText().clear(); // Clearing the input field for the user's email.
-                passwordET.getText().clear(); //
+                passwordET.getText().clear(); // Clearing the input field for the user's password.
                 Intent goToSignUp = new Intent(MainActivity.this,SignUp.class);
                 startActivity(goToSignUp);
             }

@@ -27,15 +27,11 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <Space
-            android:layout_width="match_parent"
             android:layout_height="20dp" />
 
         <EditText
             android:id="@+id/usersNameET_signup"
-            android:layout_width="375dp"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="center"
@@ -49,7 +45,7 @@
 
         <EditText
             android:id="@+id/usersSurnameET_signup"
-            android:layout_width="375dp"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="center"
@@ -63,7 +59,7 @@
 
         <EditText
             android:id="@+id/usersEmailET_signup"
-            android:layout_width="375dp"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="center"
@@ -77,7 +73,7 @@
 
         <EditText
             android:id="@+id/usersPasswordET_signup"
-            android:layout_width="375dp"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="center"
@@ -91,7 +87,7 @@
 
         <EditText
             android:id="@+id/currentHeightET_signup"
-            android:layout_width="375dp"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
@@ -105,7 +101,7 @@
 
         <EditText
             android:id="@+id/goalWeightET_signup"
-            android:layout_width="375dp"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="numberDecimal"
@@ -119,7 +115,7 @@
 
         <EditText
             android:id="@+id/calorieGoalNumET_signup"
-            android:layout_width="375dp"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="numberDecimal"

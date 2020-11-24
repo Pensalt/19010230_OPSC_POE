@@ -37,6 +37,10 @@
     <string name="measurement_system">Measurement System:</string>
     <string name="bar_cal_consumed">Cal Today</string>
     <string name="bar_cal_goal">Goal Cal</string>
+    <string name="cal_graph_heading">Calories Today</string>
+    <string name="weight_graph_heading">Weight Today</string>
+
+
 
 
 

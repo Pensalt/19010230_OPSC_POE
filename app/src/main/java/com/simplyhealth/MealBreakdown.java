@@ -4,12 +4,13 @@ public class MealBreakdown {
     private String captureDate;
     private double calories;
 
-    public MealBreakdown(String captureDate,double calories) {
+    public MealBreakdown(String captureDate, double calories) {
         this.captureDate = captureDate;
         this.calories = calories;
     }
 
-    public MealBreakdown(){}
+    public MealBreakdown() {
+    }
 
     public String getCaptureDate() {
         return captureDate;

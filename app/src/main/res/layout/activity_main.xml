@@ -10,7 +10,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="19dp" />
+        android:layout_height="20dp" />
 
     <ImageView
         android:id="@+id/LogoImgView_login"
@@ -46,7 +46,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="16dp" />
+        android:layout_height="15dp" />
 
     <Button
         android:id="@+id/loginButton_login"
@@ -60,7 +60,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="83dp" />
+        android:layout_height="80dp" />
 
     <TextView
         android:id="@+id/noAccountTV_login"

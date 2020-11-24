@@ -17,7 +17,8 @@ public class User {
         this.useMetric = useMetric;
     }
 
-    public User() {}
+    public User() {
+    }
 
     public String getFirstName() {
         return firstName;
