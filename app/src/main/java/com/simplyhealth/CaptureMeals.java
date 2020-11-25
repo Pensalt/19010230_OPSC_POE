@@ -174,6 +174,7 @@ public class CaptureMeals extends AppCompatActivity {
     // The following code is adapted from
     // Available at:https://www.geeksforgeeks.org/android-how-to-request-permissions-in-android-application/
     // Author: Aman Neekhara
+    // as well as information covered by Sarina Till during OPSC7311 lectures
     private boolean handlePermissions() {
 
         int permissionWriteExternal = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);

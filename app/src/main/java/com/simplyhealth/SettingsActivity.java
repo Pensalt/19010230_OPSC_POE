@@ -68,19 +68,9 @@ public class SettingsActivity extends AppCompatActivity {
                 String firstName = firstNameET.getText().toString().trim();
                 String surname = surnameET.getText().toString().trim();
                 double goalCal = Double.parseDouble(dailyCalorieGoalET.getText().toString());
-                double currentHeight;
-                double goalWeight;
+                double currentHeight = Double.parseDouble(currentHeightET.getText().toString());
+                double goalWeight = Double.parseDouble(goalWeightET.getText().toString());
 
-                // If Statements to control the data being pushed to Firebase.
-                if (!useMetric) {
-                    currentHeight = Double.parseDouble(currentHeightET.getText().toString()) * 30.48;
-                    goalWeight = Double.parseDouble(goalWeightET.getText().toString()) / 2.205;
-                    metricSwitch.setChecked(false);
-                } else {
-                    currentHeight = Double.parseDouble(currentHeightET.getText().toString());
-                    goalWeight = Double.parseDouble(goalWeightET.getText().toString());
-                    metricSwitch.setChecked(true);
-                }
 
                 // If Statements for data validation.
                 if (firstName.equals("") || surname.equals("") || currentHeight <= 0 || goalWeight <= 0 || goalCal <= 0) {
@@ -94,7 +84,15 @@ public class SettingsActivity extends AppCompatActivity {
                     Toast.makeText(SettingsActivity.this, "Goal Weight cannot exceed 250kg!", Toast.LENGTH_SHORT).show();
                 } else if (!useMetric && goalWeight > 551.25) {
                     Toast.makeText(SettingsActivity.this, "Goal Weight cannot exceed 551.25lb!", Toast.LENGTH_SHORT).show();
+                } else if (goalCal > 10000) {
+                    Toast.makeText(SettingsActivity.this, "Goal calories cannot exceed 10 000 calories!", Toast.LENGTH_SHORT).show();
                 } else {
+
+                    // If Statements to control the data being pushed to Firebase.
+                    if (!useMetric) {
+                        currentHeight = Double.parseDouble(currentHeightET.getText().toString()) * 30.48;
+                        goalWeight = Double.parseDouble(goalWeightET.getText().toString()) / 2.205;
+                    }
                     try {
                         DatabaseReference captureUserInfo = db.getReference(mAuth.getCurrentUser().getUid()); // Getting the current user's UID
                         User u = new User(firstName, surname, goalWeight, currentHeight, goalCal, useMetric);

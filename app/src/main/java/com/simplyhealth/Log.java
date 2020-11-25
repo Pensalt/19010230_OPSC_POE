@@ -1,4 +1,4 @@
-package com.simplyhealth;
+ package com.simplyhealth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -109,11 +109,9 @@ public class Log extends AppCompatActivity {
 
                     // Initialising current calories to 0 and goal calories to the user's goal calories.
                     currentCal = 0;
-                    goalCal = u.getGoalCalories();
 
                     // Initialising current weight to 0 and goal weight to the user's goal weight.
                     currentWeight = 0;
-                    goalWeight = u.getGoalWeight();
 
                     // The following line of code is an adaptation from
                     // Available at: https://www.youtube.com/watch?v=hHjFIG0TtA0&t=331s
@@ -141,7 +139,7 @@ public class Log extends AppCompatActivity {
                                         currentWeight = d.getWeight(); // Setting the user's current weight value to the weight value from the current day.
                                     }
                                     found = true;
-                                    break;
+                                    //break;
                                 }
                             }
 
@@ -278,7 +276,7 @@ public class Log extends AppCompatActivity {
                                 currentWeight = d.getWeight(); // Setting the user's current weight value to the weight value from the current day.
                             }
                             found = true;
-                            break;
+                            //break;
                         }
                     }
 

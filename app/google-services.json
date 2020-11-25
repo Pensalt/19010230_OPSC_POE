@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "577298810842",
+    "firebase_url": "https://simplyhealth19010230.firebaseio.com",
+    "project_id": "simplyhealth19010230",
+    "storage_bucket": "simplyhealth19010230.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577298810842:android:d2826ce5acb4b67e7fa2e3",
+        "android_client_info": {
+          "package_name": "com.simplyhealth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577298810842-6gqhaco0ojdhp303sitc60okale6psjr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.simplyhealth",
+            "certificate_hash": "cf0674639559880c28ceb09a48170998b52b5e8a"
+          }
+        },
+        {
+          "client_id": "577298810842-asooikeh9ld6jt5okk62kldfm26jp8k6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBCUA01TPIQ09R4Vn0J7LtFhQDvUDty8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577298810842-asooikeh9ld6jt5okk62kldfm26jp8k6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

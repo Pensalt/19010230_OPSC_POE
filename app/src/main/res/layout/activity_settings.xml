@@ -35,7 +35,7 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Space
@@ -44,7 +44,7 @@
 
             <TextView
                 android:id="@+id/usersNameLabelTV_settings"
-                android:layout_width="125dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="false"
@@ -55,7 +55,7 @@
 
             <EditText
                 android:id="@+id/usersNameET_settings"
-                android:layout_width="300dp"
+                android:layout_width="275dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
@@ -79,7 +79,7 @@
 
             <TextView
                 android:id="@+id/usersSurnameLabelTV_settings"
-                android:layout_width="125dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
@@ -89,7 +89,7 @@
 
             <EditText
                 android:id="@+id/usersSurnameET_settings"
-                android:layout_width="300dp"
+                android:layout_width="275dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
@@ -113,7 +113,7 @@
 
             <TextView
                 android:id="@+id/usersEmailLabelTV_settings"
-                android:layout_width="125dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
@@ -123,7 +123,7 @@
 
             <EditText
                 android:id="@+id/userEmailET_settings"
-                android:layout_width="300dp"
+                android:layout_width="275dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="false"
